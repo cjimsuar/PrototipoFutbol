@@ -1,0 +1,16 @@
+# render.yaml
+services:
+- type: web
+  name: PrototipoFutbol-api
+  env: node
+  # Aquí especificamos que la raíz del proyecto es la raíz (un punto)
+  rootDir: ./
+  plan: free # Asegúrate de que coincida con tu plan
+  buildCommand: npm install
+  startCommand: node index.js
+  envVars:
+    - key: DATABASE_URL
+      # ¡IMPORTANTE! El valor de la URL aquí DEBE ser la cadena de conexión real de Supabase.
+      # Puedes dejarlo como un placeholder si prefieres mantenerlo solo en el dashboard.
+      # Si lo dejas como placeholder, asegúrate de que el valor está en el dashboard de Render.
+      value: postgresql://postgres.ntkrzbjwornjaqaxqsjd:ProtoFutbol2025@aws-1-us-east-1.pooler.supabase.com:5432/postgres
