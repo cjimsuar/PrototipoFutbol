@@ -20,7 +20,7 @@ const pool = new Pool({
 // Middleware básico
 app.use(express.json());
 
-// Ruta de prueba
+// Ruta de prueba 
 app.get('/', (req, res) => {
   res.send('API de Jugadores conectada. Prueba /api/jugadores para los datos.');
 });
@@ -39,6 +39,53 @@ app.get('/api/jugadores', async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor al acceder a la BD.' });
   }
 });
+//--------------------------------------------------------------
+// POST: Crear un nuevo jugador
+app.post('/api/jugadores', async (req, res) => {
+  // 1. Desestructurar los datos del cuerpo de la solicitud
+  // Asumimos que estos son los campos requeridos para crear un jugador.
+  const { nombre, apellidos, fecha_nacimiento, categoria_principal_id, email } = req.body;
+
+  // 2. Validación básica (Asegurarse de que al menos los campos clave existan)
+  if (!nombre || !apellidos || !fecha_nacimiento || !categoria_principal_id) {
+    return res.status(400).json({ error: 'Faltan campos requeridos (nombre, apellidos, fecha_nacimiento, categoria_principal_id).' });
+  }
+
+  try {
+    const client = await pool.connect();
+    
+    // 3. Consulta SQL para la inserción
+    const sql = `
+      INSERT INTO Jugadores 
+      (nombre, apellidos, fecha_nacimiento, categoria_principal_id, email) 
+      VALUES ($1, $2, $3, $4, $5) 
+      RETURNING jugador_id, nombre;`; // RETURNING devuelve el ID generado y el nombre
+
+    const result = await client.query(sql, [nombre, apellidos, fecha_nacimiento, categoria_principal_id, email]);
+    
+    client.release(); // Libera la conexión
+
+    // 4. Respuesta de éxito
+    res.status(201).json({ 
+      mensaje: 'Jugador creado exitosamente.',
+      jugador: result.rows[0] // Devuelve el jugador recién creado con su ID
+    });
+
+  } catch (err) {
+    console.error('Error al insertar el jugador:', err);
+    // 5. Respuesta de error detallada
+    res.status(500).json({ 
+      error: 'Error interno del servidor al crear el jugador.',
+      detalle: err.message
+    });
+  }
+});
+//--------------------------
+
+
+
+
+
 
 // Inicia el servidor
 app.listen(PORT, () => {
