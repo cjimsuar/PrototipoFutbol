@@ -1,0 +1,14 @@
+{
+  "name": "render-supabase-jugadores-api",
+  "version": "1.0.0",
+  "description": "API simple para conectar Render y Supabase.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "dotenv": "^16.4.5",
+    "pg": "^8.11.5"
+  }
+}
