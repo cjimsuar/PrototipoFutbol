@@ -2,6 +2,7 @@
 const express = require('express');
 require('dotenv').config(); // Carga las variables de entorno locales (si existen)
 const { Pool } = require('pg');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +21,21 @@ const pool = new Pool({
 // Middleware básico
 app.use(express.json());
 
+// Configuración de Express
+const app = express();
+
+// Middleware para JSON
+app.use(express.json());
+
+// ⚠️ Configuración de CORS para permitir solicitudes desde tu entorno local
+const corsOptions = {
+    origin: 'http://localhost:5173', // 👈 ¡PERMITE SÓLO TU URL LOCAL DE REACT!
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+};
+app.use(cors(corsOptions)); // 👈 AÑADE ESTO
+
+// ... El resto de tus endpoints (GET /api/jugadores, POST /api/jugadores)
 // Ruta de prueba 
 app.get('/', (req, res) => {
   res.send('API de Jugadores conectada. Prueba /api/jugadores para los datos.');
