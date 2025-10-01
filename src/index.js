@@ -28,13 +28,16 @@ app.use(express.json());
 app.use(express.json());
 
 // ⚠️ Configuración de CORS para permitir solicitudes desde tu entorno local
-const corsOptions = {
+/*const corsOptions = {
     origin: 'http://localhost:5173', // 👈 ¡PERMITE SÓLO TU URL LOCAL DE REACT!
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 };
 app.use(cors(corsOptions)); // 👈 AÑADE ESTO
-
+*/
+// ⚠️ SOLUCIÓN TEMPORAL DE CORS: ACEPTAR CUALQUIER ORIGEN.
+// Esto anula tu configuración anterior de corsOptions.
+app.use(cors());
 // ... El resto de tus endpoints (GET /api/jugadores, POST /api/jugadores)
 // Ruta de prueba 
 app.get('/', (req, res) => {
