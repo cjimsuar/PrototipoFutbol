@@ -22,7 +22,7 @@ const pool = new Pool({
 app.use(express.json());
 
 // Configuración de Express
-const app = express();
+//const app = express();
 
 // Middleware para JSON
 app.use(express.json());
